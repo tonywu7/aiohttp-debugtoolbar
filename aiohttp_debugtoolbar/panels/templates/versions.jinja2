@@ -15,13 +15,13 @@
     </thead>
     <tbody>
         {% for package in packages %}
-            <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
-                <td><a href="{{ package['url'] }}">{{ package['name'] }}</a></td>
-                <td>{{ package['version'] }}</td>
-                <td>
-                    {{ package['dependencies']|join(', ') }}
-                </td>
-            </tr>
+        <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
+            <td><a href="{{ package['url'] }}">{{ package['name'] }}</a></td>
+            <td>{{ package['version'] }}</td>
+            <td>
+                {{ package['dependencies']|join(', ') }}
+            </td>
+        </tr>
         {% endfor %}
     </tbody>
 </table>

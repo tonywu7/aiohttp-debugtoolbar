@@ -23,8 +23,8 @@ async def index(request):
     log.critical('Critical logger fon index page')
 
     return {
-        'title': 'Aiohttp Debugtoolbar',
-        'aiohttp_mako': aiohttp_mako
+        'title': 'aiohttp Debugtoolbar',
+        'aiohttp_mako': aiohttp_mako,
     }
 
 

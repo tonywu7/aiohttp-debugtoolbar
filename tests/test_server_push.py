@@ -7,7 +7,7 @@ async def test_sse(create_server, aiohttp_client):
     async def handler(request):
         raise NotImplementedError
 
-    app = await create_server()
+    app, debug_app = await create_server()
     app.router.add_route('GET', '/', handler)
     client = await aiohttp_client(app)
     # make sure that exception page rendered
@@ -17,7 +17,7 @@ async def test_sse(create_server, aiohttp_client):
     assert '<div class="debugger">' in txt
 
     # get request id from history
-    history = app[APP_KEY]['request_history']
+    history = debug_app[APP_KEY]['request_history']
     request_id = history[0][0]
 
     url = '/_debugtoolbar/sse'
@@ -32,10 +32,10 @@ async def test_sse(create_server, aiohttp_client):
 
     payload_json = payload_raw.strip('data: ')
     payload = json.loads(payload_json)
-    expected = [[request_id, {"path": "/",
-                              "scheme": "http",
-                              "method": "GET",
-                              "status_code": 500},
-                 ""]]
+    expected = [[request_id, {'path': '/',
+                              'scheme': 'http',
+                              'method': 'GET',
+                              'status_code': 500},
+                 '']]
 
     assert payload == expected, payload

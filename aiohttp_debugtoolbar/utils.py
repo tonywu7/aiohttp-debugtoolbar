@@ -2,7 +2,6 @@ import binascii
 import ipaddress
 import os
 import sys
-
 from collections import deque
 from itertools import islice
 
@@ -11,9 +10,12 @@ TEMPLATE_KEY = 'aiohttp_debugtoolbar_jinja2'
 
 REDIRECT_CODES = (300, 301, 302, 303, 305, 307, 308)
 STATIC_PATH = 'static/'
+REQUEST_ROUTE_NAME = 'debugtoolbar.request'
 ROOT_ROUTE_NAME = 'debugtoolbar.main'
 STATIC_ROUTE_NAME = 'debugtoolbar.static'
 EXC_ROUTE_NAME = 'debugtoolbar.exception'
+SOURCE_ROUTE_NAME = 'debugtoolbar.source'
+EXEC_ROUTE_NAME = 'debugtoolbar.execute'
 
 
 def hexlify(value):
@@ -70,10 +72,9 @@ def replace_insensitive(string, target, replacement):
         return string
 
 
-def render(template_name, app, context, *, app_key=TEMPLATE_KEY, **kw):
+def render(template_name, env, context, *, app_key=TEMPLATE_KEY, **kw):
 
-    lookup = app[app_key]
-    template = lookup.get_template(template_name)
+    template = env.get_template(template_name)
     c = context.copy()
     c.update(kw)
     txt = template.render(**c)

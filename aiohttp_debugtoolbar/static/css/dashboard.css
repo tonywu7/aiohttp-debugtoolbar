@@ -4,7 +4,7 @@
 
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
-  padding-top: 70px;
+    padding-top: 70px;
 }
 
 a {
@@ -31,29 +31,28 @@ a:hover {
 }
 */
 
- .navbar-inverse {
-    background: #dd7c0d; /* Old browsers */
-    background: -moz-linear-gradient(left, #dd7c0d 0%, #c99662 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, right top, color-stop(0%,#dd7c0d), color-stop(100%,#c99662)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(left, #dd7c0d 0%,#c99662 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(left, #dd7c0d 0%,#c99662 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(left, #dd7c0d 0%,#c99662 100%); /* IE10+ */
-    background: linear-gradient(to right, #dd7c0d 0%,#c99662 100%); /* W3C */
+.navbar-inverse {
+    background: #dd7c0d; /* W3C */
+    border-color: #dd7c0d;
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dd7c0d', endColorstr='#c99662',GradientType=1 ); /* IE6-9 */
 }
 
-.navbar-inverse .navbar-brand, .navbar-inverse .navbar-nav > li > a {
+.navbar-inverse .navbar-toggle,
+.navbar-inverse .navbar-collapse {
+    border-color: transparent;
+}
+
+.navbar-inverse .navbar-brand,
+.navbar-inverse .navbar-nav > li > a {
     color: #fff;
 }
 
 .navbar-inverse .navbar-nav > .active > a,
 .navbar-inverse .navbar-nav > .active > a:hover,
 .navbar-inverse .navbar-nav > .active > a:focus,
-
 .navbar-inverse .navbar-nav > .open > a,
 .navbar-inverse .navbar-nav > .open > a:hover,
 .navbar-inverse .navbar-nav > .open > a:focus,
-
 .navbar-inverse .navbar-nav > li.active > a,
 .navbar-inverse .navbar-nav > li.active:hover > a {
     background-color: #c56b00;
@@ -76,10 +75,9 @@ a:hover {
  */
 
 .sub-header {
-  padding-bottom: 10px;
-  border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
 }
-
 
 /*
  * Sidebar
@@ -87,46 +85,47 @@ a:hover {
 
 /* Hide for mobile, show later */
 .sidebar {
-  display: none;
+    display: none;
 }
 @media (min-width: 768px) {
-  .navbar-nav {
-    float: right!important;
-  }
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    z-index: 1000;
-    display: block;
-    padding: 70px 20px 20px;
-    background-color: #eee;
-    border-right: 1px solid #eee;
-    overflow-y: scroll;
-  }
+    .navbar-nav {
+        float: right !important;
+    }
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 1000;
+        display: block;
+        padding: 70px 20px 20px;
+        background-color: #eee;
+        border-right: 1px solid #eee;
+        overflow-y: scroll;
+    }
 }
 
 /* Sidebar navigation */
 .nav-sidebar {
-  margin-left: -20px;
-  margin-right: -21px; /* 20px padding + 1px border */
-  margin-bottom: 20px;
+    margin-left: -20px;
+    margin-right: -21px; /* 20px padding + 1px border */
+    margin-bottom: 20px;
 }
-.nav-sidebar > li > h4, .nav-sidebar > li > a {
-  padding-left: 20px;
-  padding-right: 20px;
-  width: 100%;
+.nav-sidebar > li > h4,
+.nav-sidebar > li > a {
+    padding-left: 20px;
+    padding-right: 20px;
+    width: 100%;
 }
 .nav-sidebar > li > a {
-  color: #555;
+    color: #555;
 }
 .nav-sidebar > .active > a {
-  color: #fff;
-  background: #999;
+    color: #fff;
+    background: #999;
 }
 .nav-sidebar > .active:hover > a {
-  background: #999;
+    background: #999;
 }
 
 /*
@@ -134,35 +133,34 @@ a:hover {
  */
 
 .main {
-  padding: 0px 20px 20px 20px;
+    padding: 0px 20px 20px 20px;
 }
 @media (min-width: 768px) {
-  .main {
-    padding-left: 40px;
-    padding-right: 40px;
-  }
+    .main {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
 }
 .main .page-header {
-  margin-top: 0;
+    margin-top: 0;
 }
-
 
 /*
  * Placeholder dashboard ideas
  */
 
 .placeholders {
-  margin-bottom: 30px;
-  text-align: center;
+    margin-bottom: 30px;
+    text-align: center;
 }
 .placeholders h4 {
-  margin-bottom: 0;
+    margin-bottom: 0;
 }
 .placeholder {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 .placeholder img {
-  border-radius: 50%;
+    border-radius: 50%;
 }
 ul#requests li a {
     overflow: hidden;
@@ -172,10 +170,21 @@ ul#requests li a {
     max-width: 300px;
 }
 /* override twitter bootstrap's tooltip styles */
-.tooltip, .tooltip-inner {
+.tooltip,
+.tooltip-inner {
     max-width: 100%;
 }
 .tooltip {
     word-wrap: break-word;
     word-break: break-all;
+}
+
+#pDebugRoutesPanel-content table {
+    overflow-x: scroll;
+}
+
+#pDebugRoutesPanel-content td,
+#pDebugSettingsPanel-content td,
+.pDebugPanelContent td.value {
+    font-family: 'Fira Code', 'Inconsolata', 'Consolas', 'Ubuntu Mono', 'Courier New', monospace;
 }

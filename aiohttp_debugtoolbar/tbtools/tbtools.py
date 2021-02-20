@@ -8,22 +8,21 @@
     :copyright: (c) 2011 by the Werkzeug Team, see AUTHORS for more details.
     :license: BSD.
 """
-import re
-import os
-import sys
-import inspect
-import traceback
 import codecs
+import inspect
+import os
+import re
+import sys
+import traceback
 from tokenize import TokenError
 
 from aiohttp.helpers import reify
-from .console import Console
 
 from ..tbtools import text_
-from ..utils import render, STATIC_ROUTE_NAME, APP_KEY
-from ..utils import escape
-from ..utils import ROOT_ROUTE_NAME
-from ..utils import EXC_ROUTE_NAME
+from ..utils import (APP_KEY, EXC_ROUTE_NAME, EXEC_ROUTE_NAME, ROOT_ROUTE_NAME,
+                     SOURCE_ROUTE_NAME, STATIC_ROUTE_NAME, escape, render)
+from .console import Console
+
 _coding_re = re.compile(r'coding[:=]\s*([-\w.]+)')
 _line_re = re.compile(r'^(.*?)$', re.M)
 _funcdef_re = re.compile(r'^(\s*(?:async\s+?)?def\s)|'
@@ -36,14 +35,14 @@ try:
 except NameError:
     pass
 
-FRAME_HTML = '''\
+FRAME_HTML = """\
 <div class="frame" id="frame-%(id)d">
   <h4>File <cite class="filename">"%(filename)s"</cite>,
       line <em class="line">%(lineno)s</em>,
       in <code class="function">%(function_name)s</code></h4>
   <pre>%(current_line)s</pre>
 </div>
-'''
+"""
 
 
 def get_current_traceback(*, ignore_system_exceptions=False,
@@ -197,16 +196,18 @@ class Traceback:
 
     def render_full(self, request, lodgeit_url=None):
         """Render the Full HTML page with the traceback info."""
-        static_path = request.app.router[STATIC_ROUTE_NAME].url_for(
-            filename='')
-        root_path = request.app.router[ROOT_ROUTE_NAME].url_for()
+        static_path = request.config_dict[APP_KEY]['router'][STATIC_ROUTE_NAME].url_for(filename='')
+        root_path = request.config_dict[APP_KEY]['router'][ROOT_ROUTE_NAME].url_for()
+        jinja_env = request.config_dict[APP_KEY]['jinja']
         exc = escape(self.exception)
-        summary = self.render_summary(request.app, include_title=False)
-        token = request.app[APP_KEY]['pdtb_token']
+        summary = self.render_summary(jinja_env, include_title=False)
+        token = request.config_dict[APP_KEY]['pdtb_token']
         qs = {'token': token, 'tb': str(self.id)}
 
-        url = request.app.router[EXC_ROUTE_NAME].url_for().with_query(qs)
-        evalex = request.app[APP_KEY]['exc_history'].eval_exc
+        url = request.config_dict[APP_KEY]['router'][EXC_ROUTE_NAME].url_for().with_query(qs)
+        evalex = request.config_dict[APP_KEY]['exc_history'].eval_exc
+        source_path = request.config_dict[APP_KEY]['router'][SOURCE_ROUTE_NAME].url_for()
+        exec_path = request.config_dict[APP_KEY]['router'][EXEC_ROUTE_NAME].url_for()
 
         vars = {
             'evalex': evalex and 'true' or 'false',
@@ -223,8 +224,10 @@ class Traceback:
             'token': token,
             'root_path': root_path,
             'url': url,
+            'source_path': source_path,
+            'exec_path': exec_path,
         }
-        return render('exception.jinja2', request.app, vars, request=request)
+        return render('exception.jinja2', jinja_env, vars, request=request)
 
     def generate_plaintext_traceback(self):
         """Like the plaintext attribute but returns a generator"""

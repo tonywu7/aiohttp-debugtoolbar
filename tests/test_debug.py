@@ -22,7 +22,7 @@ def test_debug_repr():
                                  '<span class="number">2</span>]'
     assert debug_repr([1, 'test']) == '[<span class="number">1' \
                                       '</span>, <span class="string">' \
-                                      '\'test\'</span>]'
+                                      "'test'</span>]"
     assert debug_repr([None]) == '[<span class="object">None</span>]'
     assert debug_repr(list(range(20))) == (
         '[<span class="number">0</span>, <span class="number">1</span>, '
@@ -154,11 +154,11 @@ async def test_alternate_debug_path(create_server, aiohttp_client):
         return aiohttp_jinja2.render_template(
             'tplt.html', request,
             {'head': 'HEAD', 'text': 'text'})
-    path_prefix = '/arbitrary_path'
-    app = await create_server(path_prefix=path_prefix)
+    path_prefix = '/arbitrary_path/'
+    app, debug_app = await create_server(path_prefix=path_prefix)
     app.router.add_route('GET', '/', handler)
 
-    cookie = {"pdtb_active": "pDebugPerformancePanel"}
+    cookie = {'pdtb_active': 'pDebugPerformancePanel'}
     client = await aiohttp_client(app, cookies=cookie)
     resp = await client.get('/')
 

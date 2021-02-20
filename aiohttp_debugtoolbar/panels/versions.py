@@ -1,10 +1,10 @@
-import sys
 import platform
-import pkg_resources
+import sys
 from operator import itemgetter
 
-from .base import DebugPanel
+import pkg_resources
 
+from .base import DebugPanel
 
 __all__ = ['VersionDebugPanel']
 

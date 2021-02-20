@@ -8,15 +8,13 @@
     :copyright: (c) 2011 by the Werkzeug Team, see AUTHORS for more details.
     :license: BSD.
 """
-import sys
 import code
+import sys
 import threading
-
 from types import CodeType
 
-from .repr import debug_repr, dump, helper
 from ..utils import escape
-
+from .repr import debug_repr, dump, helper
 
 _local = threading.local()
 

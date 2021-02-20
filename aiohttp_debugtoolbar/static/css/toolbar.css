@@ -1,10 +1,15 @@
+body {
+    font-family: 'Ubuntu', 'Helvetica Neue', 'Helvetica', -apple-system, BlinkMacSystemFont, 'Noto Sans', 'Open Sans',
+        sans-serif;
+}
+
 ._200 {
     background-color: #468847;
 }
 ._500 {
     background-color: #b94a48;
 }
-._404{
+._404 {
     background-color: #3a87ad;
 }
 
@@ -21,7 +26,7 @@
     background-image: url(../img/tick.png);
 }
 
-.switch.inactive{
+.switch.inactive {
     background-image: url(../img/tick-red.png);
 }
 
@@ -39,11 +44,10 @@ a.active {
 }
 
 #pDebug #pDebugToolbarHandle {
-    position:fixed;
-    border:1px solid #e28d29;
+    position: fixed;
     top: 25%;
-    right:0;
-    z-index:100000000;
+    right: 0;
+    z-index: 100000000;
 }
 
 @media print {
@@ -53,42 +57,67 @@ a.active {
 }
 
 #pDebug a#pShowToolBarButton {
-    display:block;
-    height:40px;
-    width:40px;
-    border-right:none;
-    border-bottom:1px solid #fff;
-    border-top:1px solid #fff;
-    border-left:1px solid #fff;
-    color:#fff;
-    font-size:10px;
-    font-weight:bold;
-    text-decoration:none;
-    text-align:center;
-    text-indent:-999999px;
-    background-color:#e28d29;
-    background-size:40px 40px;
-    background-image:url(../img/aiohttp.svg);
+    display: block;
+    height: 40px;
+    width: 40px;
+    border-right: none;
+    border-bottom: 1px solid #fff;
+    border-top: 1px solid #fff;
+    border-left: 1px solid #fff;
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    text-indent: -999999px;
+    background-color: #e28d29;
+    background-size: 40px 40px;
+    background-image: url(../img/aiohttp.svg);
     background-position: left center;
-    background-repead: no-repeat;
-    opacity:0.8;
-    filter:alpha(opacity=80);
+    background-repeat: no-repeat;
+    opacity: 0.8;
+    filter: alpha(opacity=80);
 }
 
 #pDebug a#pShowToolBarButton:hover {
-    background-color:#e28d29;
-    padding-right:2px;
-    border-top-color:#fff;
-    border-left-color:#fff;
-    border-bottom-color:#fff;
-    opacity:1.0;
+    background-color: #e28d29;
+    padding-right: 2px;
+    border-top-color: #fff;
+    border-left-color: #fff;
+    border-bottom-color: #fff;
+    opacity: 1;
 }
 
 /* tablesorter */
-.header { cursor: pointer; position: relative; }
-.header:before { position: absolute; right: 0; bottom: 40%; content: '▲'; font-size: 10px; color: #bbb; }
-.header:after { position: absolute; right: 0; bottom: 20%; content: '▼'; font-size: 10px; color: #bbb; }
-.headerSortUp:before { content: ''; }
-.headerSortUp:after { color: inherit; }
-.headerSortDown:before { color: inherit; }
-.headerSortDown:after { content: ''; }
+.header {
+    cursor: pointer;
+    position: relative;
+}
+.header:before {
+    position: absolute;
+    right: 0;
+    bottom: 40%;
+    content: '↑';
+    font-size: 10px;
+    color: #bbb;
+}
+.header:after {
+    position: absolute;
+    right: 0;
+    bottom: 20%;
+    content: '↓';
+    font-size: 10px;
+    color: #bbb;
+}
+.headerSortUp:before {
+    content: '';
+}
+.headerSortUp:after {
+    color: inherit;
+}
+.headerSortDown:before {
+    color: inherit;
+}
+.headerSortDown:after {
+    content: '';
+}

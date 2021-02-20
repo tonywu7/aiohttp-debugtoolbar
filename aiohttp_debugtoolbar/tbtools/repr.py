@@ -13,14 +13,13 @@
     :copyright: (c) 2011 by the Werkzeug Team, see AUTHORS for more details.
     :license: BSD.
 """
-import sys
 import re
-from traceback import format_exception_only
+import sys
 from collections import deque
+from traceback import format_exception_only
 
 from ..tbtools import text_
 from ..utils import escape
-
 
 missing = object()
 _paragraph_re = re.compile(r'(?:\r\n|\r|\n){2,}')

@@ -1,7 +1,7 @@
 import inspect
 
+from ..utils import APP_KEY
 from .base import DebugPanel
-
 
 __all__ = ['RoutesDebugPanel']
 
@@ -22,15 +22,15 @@ class RoutesDebugPanel(DebugPanel):
 
     def populate(self, request):
         info = []
-        router = request.app.router
+        router = request.config_dict[APP_KEY]['router']
 
         for route in router.routes():
             info.append({
-                "name": route.name or '',
-                "method": route.method,
-                "info": sorted(route.get_info().items()),
-                "handler": repr(route.handler),
-                "source": inspect.getsource(route.handler)
+                'name': route.name or '',
+                'method': route.method,
+                'info': sorted(route.get_info().items()),
+                'handler': repr(route.handler),
+                'source': inspect.getsource(route.handler),
             })
 
         self.data = {'routes': info}

@@ -8,35 +8,33 @@
         </tr>
     </thead>
     <tbody>
-        {% for  route_info in routes %}
-            <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
-                <td>{{ route_info['name'] }}</td>
-                <td>{{ route_info['method'] }}</td>
-                <td>
-                  <ul>
-                  {% for name, value in route_info['info'] %}
+        {% for route_info in routes %}
+        <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
+            <td>{{ route_info['name'] }}</td>
+            <td>{{ route_info['method'] }}</td>
+            <td>
+                <ul>
+                    {% for name, value in route_info['info'] %}
                     <li>{{ name }}: {{ value }}
-                  {% endfor %}
-                  </ul>
-                </td>
-                <td>
-                  <div class="row">
+                        {% endfor %}
+                </ul>
+            </td>
+            <td>
+                <div class="row">
                     <div class="col-md-11">{{ route_info['handler']|e }}</div>
                     <div class="col-md-1">
-                  <button class="btn btn-primary pull-right" type="button"
-                          data-toggle="collapse"
-                          data-target="#collapseSource{{ loop.index }}"
-                          aria-expanded="false"
-                          aria-controls="collapseSource{{ loop.index }}">
-                    Source
-                  </button>
-                      </div>
+                        <button class="btn btn-primary pull-right" type="button" data-toggle="collapse"
+                            data-target="#collapseSource{{ loop.index }}" aria-expanded="false"
+                            aria-controls="collapseSource{{ loop.index }}">
+                            Source
+                        </button>
                     </div>
-                  <div class="collapse" id="collapseSource{{ loop.index }}">
+                </div>
+                <div class="collapse" id="collapseSource{{ loop.index }}">
                     <pre><code class="language-python">{{ route_info['source'] }}</code></pre>
-                  </div>
-                </td>
-            </tr>
+                </div>
+            </td>
+        </tr>
         {% endfor %}
     </tbody>
 </table>

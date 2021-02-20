@@ -1,8 +1,8 @@
 <h4>Request Headers</h4>
 <table class="table table-striped">
     <colgroup>
-        <col style="width:20%"/>
-        <col/>
+        <col style="width:20%" />
+        <col />
     </colgroup>
     <thead>
         <tr>
@@ -12,10 +12,10 @@
     </thead>
     <tbody>
         {% for key, value in request_headers %}
-            <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
-                <td>{{ key }}</td>
-                <td class="value">{{ value }}</td>
-            </tr>
+        <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
+            <td>{{ key }}</td>
+            <td class="value">{{ value }}</td>
+        </tr>
         {% endfor %}
     </tbody>
 </table>
@@ -23,8 +23,8 @@
 <h4>Response Headers</h4>
 <table class="table table-striped">
     <colgroup>
-        <col style="width:20%"/>
-        <col/>
+        <col style="width:20%" />
+        <col />
     </colgroup>
     <thead>
         <tr>
@@ -34,10 +34,10 @@
     </thead>
     <tbody>
         {% for key, value in response_headers %}
-            <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
-                <td>{{ key }}</td>
-                <td class="value">{{ value }}</td>
-            </tr>
+        <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
+            <td>{{ key }}</td>
+            <td class="value">{{ value }}</td>
+        </tr>
         {% endfor %}
     </tbody>
 </table>

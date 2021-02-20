@@ -1,8 +1,7 @@
 from operator import itemgetter
 
-from .base import DebugPanel
 from ..utils import APP_KEY
-
+from .base import DebugPanel
 
 __all__ = ['SettingsDebugPanel']
 
@@ -23,7 +22,7 @@ class SettingsDebugPanel(DebugPanel):
         # always repr this stuff before it's sent to the template to appease
         # dumbass stuff like MongoDB's __getattr__ that always returns a
         # Collection, which fails when Jinja tries to look up __html__ on it.
-        settings = request.app[APP_KEY]['settings']
+        settings = request.config_dict[APP_KEY]['settings']
         # filter out non-pyramid prefixed settings to avoid duplication
         reprs = [(k, repr(v)) for k, v in settings.items()]
         self.data = {'settings': sorted(reprs, key=itemgetter(0))}

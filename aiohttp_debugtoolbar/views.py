@@ -1,12 +1,49 @@
 import json
-import aiohttp_jinja2
 
+import aiohttp_jinja2
 from aiohttp import web
 
 # from .tbtools.console import _ConsoleFrame
-from .utils import TEMPLATE_KEY, APP_KEY, ROOT_ROUTE_NAME, STATIC_ROUTE_NAME
+from .utils import (APP_KEY, EXC_ROUTE_NAME, EXEC_ROUTE_NAME,
+                    REQUEST_ROUTE_NAME, ROOT_ROUTE_NAME, SOURCE_ROUTE_NAME,
+                    STATIC_ROUTE_NAME, TEMPLATE_KEY)
+
+routes = web.RouteTableDef()
 
 
+U_SSE_PAYLOAD = 'id: {0}\nevent: new_request\ndata: {1}\n\n'
+
+
+@routes.get('/sse', name='debugtoolbar.sse')
+async def sse(request):
+    response = web.Response(status=200)
+    response.content_type = 'text/event-stream'
+    history = request.app[APP_KEY]['request_history']
+    response.text = ''
+
+    active_request_id = str(request.match_info.get('request_id'))
+    client_last_request_id = str(request.headers.get('Last-Event-Id', 0))
+
+    settings = request.app[APP_KEY]['settings']
+    max_visible_requests = settings['max_visible_requests']
+
+    if history:
+        last_request_pair = history.last(1)[0]
+        last_request_id = last_request_pair[0]
+        if not last_request_id == client_last_request_id:
+            data = []
+            for _id, toolbar in history.last(max_visible_requests):
+                req_type = 'active' if active_request_id == _id else ''
+                data.append([_id, toolbar.json, req_type])
+
+            if data:
+                response.text = U_SSE_PAYLOAD.format(last_request_id,
+                                                     json.dumps(data))
+    return response
+
+
+@routes.get('/', name=ROOT_ROUTE_NAME)
+@routes.get('/{request_id}', name=REQUEST_ROUTE_NAME)
 @aiohttp_jinja2.template('toolbar.jinja2', app_key=TEMPLATE_KEY)
 async def request_view(request):
     settings = request.app[APP_KEY]['settings']
@@ -41,10 +78,19 @@ async def request_view(request):
             'history': hist_toolbars,
             'global_panels': global_panels,
             'request_id': request_id,
+            'sse_path': request.app.router['debugtoolbar.sse'].url_for().raw_path,
             'request': toolbar.request if toolbar else None}
 
 
 class ExceptionDebugView:
+    def __init__(self):
+        self.routes = web.RouteTableDef()
+        self.routes.get('/source', name=SOURCE_ROUTE_NAME)(self.source)
+        self.routes.get('/execute', name=EXEC_ROUTE_NAME)(self.execute)
+        self.routes.get('/exception', name=EXC_ROUTE_NAME)(self.exception)
+        # self.routes.get('/console', name='debugtoolbar.console')(self.console)
+        # self.routes.get('/sqlalchemy/sql_select', name='debugtoolbar.sql_select')
+        # self.routes.get('/sqlalchemy/sql_explain', name='debugtoolbar.sql_explain')
 
     def _validate_token(self, request):
         exc_history = self._exception_history(request)
@@ -89,8 +135,7 @@ class ExceptionDebugView:
         tb_id = await self._get_tb(request)
         tb = self._exception_history(request).tracebacks[tb_id]
         body = tb.render_full(request).encode('utf-8', 'replace')
-        response = web.Response(status=200)
-        response.body = body
+        response = web.Response(body=body, status=200, content_type='text/html')
         return response
 
     async def source(self, request):
@@ -148,33 +193,3 @@ class ExceptionDebugView:
     #     if 0 not in _exc_history.frames:
     #         _exc_history.frames[0] = _ConsoleFrame({})
     #     return vars
-
-
-U_SSE_PAYLOAD = "id: {0}\nevent: new_request\ndata: {1}\n\n"
-
-
-async def sse(request):
-    response = web.Response(status=200)
-    response.content_type = 'text/event-stream'
-    history = request.app[APP_KEY]['request_history']
-    response.text = ''
-
-    active_request_id = str(request.match_info.get('request_id'))
-    client_last_request_id = str(request.headers.get('Last-Event-Id', 0))
-
-    settings = request.app[APP_KEY]['settings']
-    max_visible_requests = settings['max_visible_requests']
-
-    if history:
-        last_request_pair = history.last(1)[0]
-        last_request_id = last_request_pair[0]
-        if not last_request_id == client_last_request_id:
-            data = []
-            for _id, toolbar in history.last(max_visible_requests):
-                req_type = 'active' if active_request_id == _id else ''
-                data.append([_id, toolbar.json, req_type])
-
-            if data:
-                response.text = U_SSE_PAYLOAD.format(last_request_id,
-                                                     json.dumps(data))
-    return response

@@ -1,5 +1,5 @@
+from ..utils import APP_KEY, STATIC_ROUTE_NAME
 from .base import DebugPanel
-from ..utils import STATIC_ROUTE_NAME
 
 __all__ = ['MiddlewaresDebugPanel']
 
@@ -32,7 +32,7 @@ class MiddlewaresDebugPanel(DebugPanel):
                 middleware_names.append(m.__repr__())
         self.data = {'middlewares': middleware_names}
 
-    def render_vars(self, request):
-        static_path = self._request.app.router[STATIC_ROUTE_NAME]\
-            .url_for(filename='')
+    def render_vars(self, request=None):
+        request = request or self._request
+        static_path = request.config_dict[APP_KEY]['router'][STATIC_ROUTE_NAME].url_for(filename='')
         return {'static_path': static_path}

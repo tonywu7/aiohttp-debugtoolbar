@@ -1,4 +1,4 @@
-from ..utils import render
+from ..utils import APP_KEY, render
 
 
 class DebugPanel:
@@ -91,7 +91,7 @@ class DebugPanel:
         """
         context = self.data.copy()
         context.update(self.render_vars(request))
-        return render(self.template, request.app, context, request=request)
+        return render(self.template, request.config_dict[APP_KEY]['jinja'], context, request=request)
 
     @property
     def dom_id(self):

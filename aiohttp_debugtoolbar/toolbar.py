@@ -1,7 +1,9 @@
 from urllib.parse import unquote as url_unquote
-from aiohttp.web import Response
-from .utils import replace_insensitive, STATIC_ROUTE_NAME, APP_KEY
 
+from aiohttp.web import Response
+
+from .utils import (APP_KEY, REQUEST_ROUTE_NAME, STATIC_ROUTE_NAME,
+                    replace_insensitive)
 
 __all__ = ['DebugToolbar']
 
@@ -54,15 +56,14 @@ class DebugToolbar:
         # called in host app
         if not isinstance(response, Response):
             return
-        settings = request.app[APP_KEY]['settings']
+        settings = request.config_dict[APP_KEY]['settings']
         response_html = response.body
-        route = request.app.router['debugtoolbar.request']
+        route = request.config_dict[APP_KEY]['router'][REQUEST_ROUTE_NAME]
         toolbar_url = route.url_for(request_id=request['id'])
 
         button_style = settings['button_style']
 
-        css_path = request.app.router[STATIC_ROUTE_NAME].url_for(
-            filename='css/toolbar_button.css')
+        css_path = request.config_dict[APP_KEY]['router'][STATIC_ROUTE_NAME].url_for(filename='css/toolbar_button.css')
 
         toolbar_css = toolbar_css_template % {'css_path': css_path}
         toolbar_html = toolbar_html_template % {
@@ -86,8 +87,7 @@ toolbar_html_template = """\
 <div id="pDebug">
     <div style="display: block; %(button_style)s" id="pDebugToolbarHandle">
         <a title="Show Toolbar" id="pShowToolBarButton"
-           href="%(toolbar_url)s" target="pDebugToolbar">&#171;
-           FIXME: Debug Toolbar</a>
+           href="%(toolbar_url)s" target="pDebugToolbar">Debug Toolbar</a>
     </div>
 </div>
 """
