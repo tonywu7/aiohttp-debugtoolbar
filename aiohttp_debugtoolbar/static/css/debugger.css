@@ -224,6 +224,7 @@ pre.console table tr {
 }
 pre.console table th {
     white-space: nowrap;
+    padding-inline-end: 6px;
 }
 div.console {
     border: 1px solid #dddddd;

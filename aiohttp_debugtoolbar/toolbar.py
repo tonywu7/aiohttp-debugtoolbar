@@ -75,6 +75,7 @@ class DebugToolbar:
         toolbar_css = toolbar_css.encode(response.charset or 'utf-8')
         response_html = replace_insensitive(
             response_html, b'</head>', toolbar_css + b'</head>')
+        response.headers.popall('content-length', None)
         response.body = replace_insensitive(
             response_html, b'</body>',
             toolbar_html + b'</body>')
